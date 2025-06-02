@@ -39,8 +39,6 @@ class Button:
 
 
 """
-🧠 Button Class – Annotated Explanation
-
 __init__(...)
 
 This method sets up the button with:

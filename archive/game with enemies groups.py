@@ -1,6 +1,6 @@
 # Importing the required modules
 import pygame
-from enemy import Enemy
+from archive.enemy import Enemy
 from sys import exit
 
 # Initalising the pygame module

@@ -1,7 +1,7 @@
 # Importing the required modules
 import pygame
 from sys import exit
-from button_update import Button
+from it1_button import Button
 
 
 # Initialising the pygame module
