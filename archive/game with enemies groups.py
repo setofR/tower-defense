@@ -7,7 +7,7 @@ from sys import exit
 pygame.init()
 
 # Creating the game's window
-canvas = pygame.display.set_mode((800, 500), pygame.RESIZABLE)
+screen = pygame.display.set_mode((800, 500), pygame.RESIZABLE)
 pygame.display.set_caption("Tower Defense")
 
 
@@ -31,11 +31,11 @@ while True:
             exit()
 
     # draw all our elements
-    canvas.fill("grey100")
-    enemy_group.draw(canvas)
+    screen.fill("grey100")
+    enemy_group.draw(screen)
 
     # draw enemy path
-    pygame.draw.lines(canvas, "grey0", False, keyframes)
+    pygame.draw.lines(screen, "grey0", False, keyframes)
     # update everything
     pygame.display.update()
     clock.tick(60)

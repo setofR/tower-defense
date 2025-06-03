@@ -4,7 +4,7 @@ from it1_button import Button
 
 pygame.init()
 
-canvas = pygame.display.set_mode((800, 500))
+screen = pygame.display.set_mode((800, 500))
 pygame.display.set_caption("Tower Defense")
 
 clock = pygame.time.Clock()
@@ -15,7 +15,7 @@ def get_font(size):
 def play():
     running = True
     while running:
-        canvas.fill("darkblue")
+        screen.fill("darkblue")
         
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -25,19 +25,19 @@ def play():
                 running = False
                 
         text = get_font(40).render("Game Screen (ESC to return)", True, "white")
-        canvas.blit(text, text.get_rect(center=(400, 250)))
+        screen.blit(text, text.get_rect(center=(400, 250)))
         
         pygame.display.update()
         clock.tick(60)
 
 def menu():
     while True:
-        canvas.fill("black")
+        screen.fill("black")
         mouse_pos = pygame.mouse.get_pos()
         
         title_text = get_font(50).render("Tower Defense", True, "white")
         title_rect = title_text.get_rect(center=(400, 100))
-        canvas.blit(title_text, title_rect)
+        screen.blit(title_text, title_rect)
         
         play_button = Button(None, (400, 200), "PLAY", get_font(36), "white", "green")
         options_button = Button(None, (400, 280), "OPTIONS", get_font(36), "white", "green")
@@ -45,7 +45,7 @@ def menu():
         
         for button in [play_button, options_button, quit_button]:
             button.changeColor(mouse_pos)
-            button.update(canvas)
+            button.update(screen)
             
         for event in pygame.event.get():
             if event.type == pygame.QUIT:

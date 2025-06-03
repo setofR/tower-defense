@@ -15,7 +15,7 @@ test_music_position = 0
 
 
 # Game window properties
-canvas = pygame.display.set_mode((800, 800))
+screen = pygame.display.set_mode((800, 800))
 pygame.display.set_caption("StarGuard")
 
 
@@ -37,44 +37,16 @@ def play():
 
     running = True
     while running:
-        canvas.fill("darkblue")
+        screen.fill("darkblue")
         mouse_pos = pygame.mouse.get_pos()
 
-        # Title
+
         title_text = get_font(50).render("Pick a Level!", True, "white")
         title_rect = title_text.get_rect(
-            center=(canvas.get_width() // 2, canvas.get_height() // 2 - 160)
+            center=(screen.get_width() // 2, screen.get_height() // 2 - 160)
         )
-        canvas.blit(title_text, title_rect)
-
-        center_x = canvas.get_width() // 2
-        center_y = canvas.get_height() // 2
-        spacing = 80
-
-        easy_button = Button(
-            None,
-            (center_x, center_y - spacing),
-            "EASY",
-            get_font(36),
-            "white",
-            "lightblue",
-        )
-        medium_button = Button(
-            None, (center_x, center_y), "MEDIUM", get_font(36), "white", "lightblue"
-        )
-        hard_button = Button(
-            None,
-            (center_x, center_y + spacing),
-            "HARD",
-            get_font(36),
-            "white",
-            "lightblue",
-        )
-
-        for button in [easy_button, medium_button, hard_button]:
-            button.changeColor(mouse_pos)
-            button.update(canvas)
-
+        screen.blit(title_text, title_rect)
+      
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -82,15 +54,7 @@ def play():
 
             if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
                 running = False
-
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                if easy_button.checkForInput(mouse_pos):
-                    print("EASY mode selected")
-                if medium_button.checkForInput(mouse_pos):
-                    print("MEDIUM mode selected")
-                if hard_button.checkForInput(mouse_pos):
-                    print("HARD mode selected")
-
+                
         pygame.display.update()
         clock.tick(60)
 
@@ -122,7 +86,7 @@ def options():
 
     running = True
     while running:
-        canvas.fill("indigo")
+        screen.fill("indigo")
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -156,22 +120,22 @@ def options():
                         test_music_playing = True
 
         heading = get_font(18).render("Options Menu (ESC to return)", True, "white")
-        canvas.blit(heading, heading.get_rect(center=(400, 120)))
+        screen.blit(heading, heading.get_rect(center=(400, 120)))
 
         # Draw volume label centered
-        canvas.blit(volume_label, volume_label.get_rect(center=(400, 200)))
+        screen.blit(volume_label, volume_label.get_rect(center=(400, 200)))
 
         # Draw volume value percentage below
         volume_value = get_font(20).render(
             f"{int(master_volume * 100)}%", True, "white"
         )
-        canvas.blit(volume_value, volume_value.get_rect(center=(400, 240)))
+        screen.blit(volume_value, volume_value.get_rect(center=(400, 240)))
 
         test_music_btn.base_color = "green" if test_music_playing else "red"
 
         for button in [vol_up_btn, vol_down_btn, test_music_btn]:
             button.changeColor(pygame.mouse.get_pos())
-            button.update(canvas)
+            button.update(screen)
 
         pygame.display.update()
         clock.tick(60)
@@ -187,19 +151,19 @@ def menu():
     pygame.mixer.music.play(loops=1, fade_ms=3000)
 
     while True:
-        canvas.fill("black")
+        screen.fill("black")
         mouse_pos = pygame.mouse.get_pos()
 
         # Title
         title_text = get_font(50).render("StarGuard", True, "gold")
         title_rect = title_text.get_rect(
-            center=(canvas.get_width() // 2, canvas.get_height() // 2 - 160)
+            center=(screen.get_width() // 2, screen.get_height() // 2 - 160)
         )
-        canvas.blit(title_text, title_rect)
+        screen.blit(title_text, title_rect)
 
         # Buttons
-        center_x = canvas.get_width() // 2
-        center_y = canvas.get_height() // 2
+        center_x = screen.get_width() // 2
+        center_y = screen.get_height() // 2
         spacing = 80  # Vertical spacing between buttons
 
         play_button = Button(
@@ -224,7 +188,7 @@ def menu():
 
         for button in [play_button, options_button, quit_button]:
             button.changeColor(mouse_pos)
-            button.update(canvas)
+            button.update(screen)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
