@@ -41,11 +41,11 @@ def play():
         mouse_pos = pygame.mouse.get_pos()
 
 
-        title_text = get_font(50).render("Pick a Level!", True, "white")
-        title_rect = title_text.get_rect(
+        placeholder_text = get_font(20).render("Placeholder for Game Screen", True, "white")
+        placeholder_rect = placeholder_text.get_rect(
             center=(screen.get_width() // 2, screen.get_height() // 2 - 160)
         )
-        screen.blit(title_text, title_rect)
+        screen.blit(placeholder_text, placeholder_rect)
       
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
