@@ -28,10 +28,18 @@ def get_font(size):
 
 
 def play():
+    pygame.mixer.music.stop()
+
+    # Load and start the music once
+    pygame.mixer.music.load("assets/music/greensleeves-8bit.ogg")
+    pygame.mixer.music.set_volume(master_volume)  # Set volume (0.0 to 1.0)
+    pygame.mixer.music.play(loops=-1)
+
     running = True
     while running:
         screen.fill("darkblue")
         mouse_pos = pygame.mouse.get_pos()
+
 
         placeholder_text = get_font(20).render("Placeholder for Game Screen", True, "white")
         placeholder_rect = placeholder_text.get_rect(
@@ -50,10 +58,25 @@ def play():
         pygame.display.update()
         clock.tick(60)
 
+    # Stop the music when we exit the play screen
+    pygame.mixer.music.stop()
+    pygame.mixer.music.load("assets/music/debussy-arabesque-1.ogg")
+    pygame.mixer.music.set_volume(master_volume)
+    pygame.mixer.music.play(loops=1, fade_ms=3000)
+
+
 def options():
+    """
+    Displays the options screen and allows the user to adjust the volume and test music.
+
+    Returns:
+        None
+    """
     pygame.mixer.music.stop()
     global master_volume, test_music_playing, test_music_position
 
+    # Options screen
+    # Volume control buttons (new layout)
     volume_label = get_font(30).render("VOLUME", True, "white")
     vol_up_btn = Button(None, (540, 200), "+", get_font(40), "green", "darkgreen")
     vol_down_btn = Button(None, (260, 200), "-", get_font(40), "red", "darkred")
@@ -116,6 +139,10 @@ def options():
 
         pygame.display.update()
         clock.tick(60)
+
+    pygame.mixer.music.load("assets/music/debussy-arabesque-1.ogg")
+    pygame.mixer.music.set_volume(master_volume)
+    pygame.mixer.music.play(loops=1, fade_ms=3000)
 
 
 def menu():
