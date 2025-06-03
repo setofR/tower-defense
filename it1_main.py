@@ -6,7 +6,7 @@ pygame.init()
 
 # Creating the game window
 screen = pygame.display.set_mode((800, 800))
-pygame.display.set_caption('Tower Defense')
+pygame.display.set_caption("Tower Defense")
 
 # Game clock
 clock = pygame.time.Clock()

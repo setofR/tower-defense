@@ -40,13 +40,14 @@ def play():
         screen.fill("darkblue")
         mouse_pos = pygame.mouse.get_pos()
 
-
-        placeholder_text = get_font(20).render("Placeholder for Game Screen", True, "white")
+        placeholder_text = get_font(20).render(
+            "Placeholder for Game Screen", True, "white"
+        )
         placeholder_rect = placeholder_text.get_rect(
             center=(screen.get_width() // 2, screen.get_height() // 2 - 160)
         )
         screen.blit(placeholder_text, placeholder_rect)
-      
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -54,7 +55,7 @@ def play():
 
             if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
                 running = False
-                
+
         pygame.display.update()
         clock.tick(60)
 

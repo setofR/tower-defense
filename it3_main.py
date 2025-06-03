@@ -14,51 +14,62 @@ pygame.display.set_caption("StarGuard")
 
 clock = pygame.time.Clock()
 
+
 def get_font(size):
     return pygame.font.Font("assets/fonts/font.ttf", size)
+
 
 def play():
     pygame.mixer.music.stop()
     pygame.mixer.music.load("assets/music/greensleeves-8bit.ogg")
     pygame.mixer.music.set_volume(master_volume)
     pygame.mixer.music.play(loops=-1)
-    
+
     game = Game()
-    
+
     running = True
     while running:
         screen.fill("darkblue")
         mouse_pos = pygame.mouse.get_pos()
-        
+
         game.draw_grid(screen)
-        
+
         grid_pos = game.get_grid_pos(mouse_pos)
         if grid_pos and game.can_place_tower(grid_pos):
             x, y = grid_pos
-            pygame.draw.rect(screen, (0, 255, 0, 100), 
-                           (x * game.grid_size, y * game.grid_size, 
-                            game.grid_size, game.grid_size), 2)
-        
+            pygame.draw.rect(
+                screen,
+                (0, 255, 0, 100),
+                (
+                    x * game.grid_size,
+                    y * game.grid_size,
+                    game.grid_size,
+                    game.grid_size,
+                ),
+                2,
+            )
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 exit()
-            
+
             if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
                 running = False
-            
+
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if grid_pos and game.can_place_tower(grid_pos):
                     print("notihng happens yet")
                     # code to place a tower would go here
-        
+
         pygame.display.update()
         clock.tick(60)
-    
+
     pygame.mixer.music.stop()
     pygame.mixer.music.load("assets/music/debussy-arabesque-1.ogg")
     pygame.mixer.music.set_volume(master_volume)
     pygame.mixer.music.play(loops=1, fade_ms=3000)
+
 
 def options():
     pygame.mixer.music.stop()
@@ -67,7 +78,9 @@ def options():
     volume_label = get_font(30).render("VOLUME", True, "white")
     vol_up_btn = Button(None, (540, 200), "+", get_font(40), "green", "darkgreen")
     vol_down_btn = Button(None, (260, 200), "-", get_font(40), "red", "darkred")
-    test_music_btn = Button(None, (400, 300), "TEST MUSIC", get_font(30), "white", "gray")
+    test_music_btn = Button(
+        None, (400, 300), "TEST MUSIC", get_font(30), "white", "gray"
+    )
 
     running = True
     while running:
@@ -108,7 +121,9 @@ def options():
 
         screen.blit(volume_label, volume_label.get_rect(center=(400, 200)))
 
-        volume_value = get_font(20).render(f"{int(master_volume * 100)}%", True, "white")
+        volume_value = get_font(20).render(
+            f"{int(master_volume * 100)}%", True, "white"
+        )
         screen.blit(volume_value, volume_value.get_rect(center=(400, 240)))
 
         test_music_btn.base_color = "green" if test_music_playing else "red"
@@ -124,6 +139,7 @@ def options():
     pygame.mixer.music.set_volume(master_volume)
     pygame.mixer.music.play(loops=1, fade_ms=3000)
 
+
 def menu():
     pygame.mixer.music.load("assets/music/debussy-arabesque-1.ogg")
     pygame.mixer.music.set_volume(master_volume)
@@ -134,16 +150,34 @@ def menu():
         mouse_pos = pygame.mouse.get_pos()
 
         title_text = get_font(50).render("StarGuard", True, "gold")
-        title_rect = title_text.get_rect(center=(screen.get_width() // 2, screen.get_height() // 2 - 160))
+        title_rect = title_text.get_rect(
+            center=(screen.get_width() // 2, screen.get_height() // 2 - 160)
+        )
         screen.blit(title_text, title_rect)
 
         center_x = screen.get_width() // 2
         center_y = screen.get_height() // 2
         spacing = 80
 
-        play_button = Button(None, (center_x, center_y - spacing), "PLAY", get_font(36), "white", "purple")
-        options_button = Button(None, (center_x, center_y), "OPTIONS", get_font(36), "white", "purple")
-        quit_button = Button(None, (center_x, center_y + spacing), "QUIT", get_font(36), "white", "purple")
+        play_button = Button(
+            None,
+            (center_x, center_y - spacing),
+            "PLAY",
+            get_font(36),
+            "white",
+            "purple",
+        )
+        options_button = Button(
+            None, (center_x, center_y), "OPTIONS", get_font(36), "white", "purple"
+        )
+        quit_button = Button(
+            None,
+            (center_x, center_y + spacing),
+            "QUIT",
+            get_font(36),
+            "white",
+            "purple",
+        )
 
         for button in [play_button, options_button, quit_button]:
             button.changeColor(mouse_pos)
@@ -165,6 +199,7 @@ def menu():
 
         pygame.display.update()
         clock.tick(60)
+
 
 if __name__ == "__main__":
     menu()
