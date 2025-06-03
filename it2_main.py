@@ -29,42 +29,72 @@ def get_font(size):
 
 def play():
     pygame.mixer.music.stop()
+
+    # Load and start the music once
     pygame.mixer.music.load("assets/music/greensleeves-8bit.ogg")
-    pygame.mixer.music.set_volume(master_volume)
+    pygame.mixer.music.set_volume(master_volume)  # Set volume (0.0 to 1.0)
     pygame.mixer.music.play(loops=-1)
-    
-    from game import Game
-    game = Game()
-    
+
     running = True
     while running:
         canvas.fill("darkblue")
         mouse_pos = pygame.mouse.get_pos()
-        
-        game.draw_grid(canvas)
-        
-        grid_pos = game.get_grid_pos(mouse_pos)
-        if grid_pos and game.can_place_tower(grid_pos):
-            x, y = grid_pos
-            pygame.draw.rect(canvas, (0, 255, 0, 100), 
-                           (x * game.grid_size, y * game.grid_size, 
-                            game.grid_size, game.grid_size), 2)
-        
+
+        # Title
+        title_text = get_font(50).render("Pick a Level!", True, "white")
+        title_rect = title_text.get_rect(
+            center=(canvas.get_width() // 2, canvas.get_height() // 2 - 160)
+        )
+        canvas.blit(title_text, title_rect)
+
+        center_x = canvas.get_width() // 2
+        center_y = canvas.get_height() // 2
+        spacing = 80
+
+        easy_button = Button(
+            None,
+            (center_x, center_y - spacing),
+            "EASY",
+            get_font(36),
+            "white",
+            "lightblue",
+        )
+        medium_button = Button(
+            None, (center_x, center_y), "MEDIUM", get_font(36), "white", "lightblue"
+        )
+        hard_button = Button(
+            None,
+            (center_x, center_y + spacing),
+            "HARD",
+            get_font(36),
+            "white",
+            "lightblue",
+        )
+
+        for button in [easy_button, medium_button, hard_button]:
+            button.changeColor(mouse_pos)
+            button.update(canvas)
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 exit()
-            
+
             if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
                 running = False
-            
+
             if event.type == pygame.MOUSEBUTTONDOWN:
-                if grid_pos and game.can_place_tower(grid_pos):
-                    print(f"Tower can be placed at {grid_pos}")
-        
+                if easy_button.checkForInput(mouse_pos):
+                    print("EASY mode selected")
+                if medium_button.checkForInput(mouse_pos):
+                    print("MEDIUM mode selected")
+                if hard_button.checkForInput(mouse_pos):
+                    print("HARD mode selected")
+
         pygame.display.update()
         clock.tick(60)
-    
+
+    # Stop the music when we exit the play screen
     pygame.mixer.music.stop()
     pygame.mixer.music.load("assets/music/debussy-arabesque-1.ogg")
     pygame.mixer.music.set_volume(master_volume)

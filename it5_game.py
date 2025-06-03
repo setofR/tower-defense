@@ -1,5 +1,6 @@
 import pygame
 from it4_enemy import Enemy
+from it5_tower import Tower
 
 class Game:
     def __init__(self):
@@ -9,8 +10,10 @@ class Game:
         self.grid = [[0 for _ in range(self.cols)] for _ in range(self.rows)]
         self.path = []
         self.enemies = []
+        self.towers = []
         self.base_health = 100
         self.currency = 100
+        self.selected_tower = None
         self.setup_path()
         
     def setup_path(self):
@@ -25,11 +28,50 @@ class Game:
             self.path.append((x * self.grid_size + self.grid_size // 2, 
                             y * self.grid_size + self.grid_size // 2))
     
+    def get_grid_pos(self, mouse_pos):
+        x = mouse_pos[0] // self.grid_size
+        y = mouse_pos[1] // self.grid_size
+        if 0 <= x < self.cols and 0 <= y < self.rows:
+            return (x, y)
+        return None
+    
+    def can_place_tower(self, grid_pos):
+        if grid_pos is None:
+            return False
+        x, y = grid_pos
+        if self.grid[y][x] != 0:
+            return False
+        for tower in self.towers:
+            if tower.x == x * self.grid_size and tower.y == y * self.grid_size:
+                return False
+        return True
+    
+    def place_tower(self, grid_pos):
+        if self.can_place_tower(grid_pos) and self.currency >= Tower.cost:
+            x, y = grid_pos
+            tower = Tower(x * self.grid_size, y * self.grid_size)
+            self.towers.append(tower)
+            self.currency -= tower.cost
+            return True
+        return False
+    
+    def get_tower_at(self, grid_pos):
+        if grid_pos is None:
+            return None
+        x, y = grid_pos
+        pixel_x = x * self.grid_size
+        pixel_y = y * self.grid_size
+        for tower in self.towers:
+            if tower.x == pixel_x and tower.y == pixel_y:
+                return tower
+        return None
+    
     def spawn_enemy(self):
         enemy = Enemy(self.path)
         self.enemies.append(enemy)
     
-    def update(self):
+    def update(self, current_time):
+        # Update enemies
         for enemy in self.enemies[:]:
             enemy.move()
             
@@ -39,6 +81,12 @@ class Game:
             elif not enemy.is_alive():
                 self.currency += enemy.reward
                 self.enemies.remove(enemy)
+        
+        # Tower shooting
+        for tower in self.towers:
+            target = tower.find_target(self.enemies)
+            if target:
+                tower.shoot(target, current_time)
     
     def draw(self, screen):
         # Draw grid
@@ -59,6 +107,12 @@ class Game:
         base_x, base_y = self.path[-1]
         pygame.draw.rect(screen, "blue", (base_x - 20, base_y - 20, 40, 40))
         
+        # Draw towers
+        for tower in self.towers:
+            tower.draw(screen)
+            if tower == self.selected_tower:
+                tower.draw_range(screen)
+        
         # Draw enemies
         for enemy in self.enemies:
             enemy.draw(screen)
@@ -69,3 +123,8 @@ class Game:
         
         health_text = font.render(f"Base Health: {self.base_health}", True, "white")
         screen.blit(health_text, (10, 40))
+        
+        if self.base_health <= 0:
+            game_over_text = font.render("GAME OVER", True, "red")
+            text_rect = game_over_text.get_rect(center=(360, 360))
+            screen.blit(game_over_text, text_rect)
