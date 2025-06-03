@@ -1,84 +1,124 @@
+# Importing the required modules
 import pygame
 from sys import exit
 from it2_button import Button
-from it4_game import Game
 
+
+# Initialising the pygame module
 pygame.init()
 
-master_volume = 0.3
+
+# Master volume control
+master_volume = 0.3  # Default master volume
 test_music_playing = False
 test_music_position = 0
 
+
+# Game window properties
 canvas = pygame.display.set_mode((800, 800))
 pygame.display.set_caption("StarGuard")
 
+
+# Game clock
 clock = pygame.time.Clock()
+
 
 def get_font(size):
     return pygame.font.Font("assets/fonts/font.ttf", size)
 
+
 def play():
     pygame.mixer.music.stop()
+
+    # Load and start the music once
     pygame.mixer.music.load("assets/music/greensleeves-8bit.ogg")
-    pygame.mixer.music.set_volume(master_volume)
+    pygame.mixer.music.set_volume(master_volume)  # Set volume (0.0 to 1.0)
     pygame.mixer.music.play(loops=-1)
-    
-    game = Game()
-    font = get_font(24)
-    
-    enemy_spawn_timer = 0
-    enemy_spawn_delay = 3000
-    
+
     running = True
     while running:
         canvas.fill("darkblue")
         mouse_pos = pygame.mouse.get_pos()
-        current_time = pygame.time.get_ticks()
-        
-        if current_time - enemy_spawn_timer > enemy_spawn_delay:
-            game.spawn_enemy()
-            enemy_spawn_timer = current_time
-        
-        game.update()
-        game.draw(canvas)
-        
-        grid_pos = game.get_grid_pos(mouse_pos)
-        if grid_pos and game.can_place_tower(grid_pos):
-            x, y = grid_pos
-            pygame.draw.rect(canvas, (0, 255, 0, 100), 
-                           (x * game.grid_size, y * game.grid_size, 
-                            game.grid_size, game.grid_size), 2)
-        
-        game.draw_ui(canvas, font)
-        
+
+        # Title
+        title_text = get_font(50).render("Pick a Level!", True, "white")
+        title_rect = title_text.get_rect(
+            center=(canvas.get_width() // 2, canvas.get_height() // 2 - 160)
+        )
+        canvas.blit(title_text, title_rect)
+
+        center_x = canvas.get_width() // 2
+        center_y = canvas.get_height() // 2
+        spacing = 80
+
+        easy_button = Button(
+            None,
+            (center_x, center_y - spacing),
+            "EASY",
+            get_font(36),
+            "white",
+            "lightblue",
+        )
+        medium_button = Button(
+            None, (center_x, center_y), "MEDIUM", get_font(36), "white", "lightblue"
+        )
+        hard_button = Button(
+            None,
+            (center_x, center_y + spacing),
+            "HARD",
+            get_font(36),
+            "white",
+            "lightblue",
+        )
+
+        for button in [easy_button, medium_button, hard_button]:
+            button.changeColor(mouse_pos)
+            button.update(canvas)
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 exit()
-            
+
             if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
                 running = False
-            
+
             if event.type == pygame.MOUSEBUTTONDOWN:
-                if grid_pos and game.can_place_tower(grid_pos):
-                    print(f"Tower can be placed at {grid_pos}")
-        
+                if easy_button.checkForInput(mouse_pos):
+                    print("EASY mode selected")
+                if medium_button.checkForInput(mouse_pos):
+                    print("MEDIUM mode selected")
+                if hard_button.checkForInput(mouse_pos):
+                    print("HARD mode selected")
+
         pygame.display.update()
         clock.tick(60)
-    
+
+    # Stop the music when we exit the play screen
     pygame.mixer.music.stop()
     pygame.mixer.music.load("assets/music/debussy-arabesque-1.ogg")
     pygame.mixer.music.set_volume(master_volume)
     pygame.mixer.music.play(loops=1, fade_ms=3000)
 
+
 def options():
+    """
+    Displays the options screen and allows the user to adjust the volume and test music.
+
+    Returns:
+        None
+    """
     pygame.mixer.music.stop()
     global master_volume, test_music_playing, test_music_position
 
+    # Options screen
+    # Volume control buttons (new layout)
     volume_label = get_font(30).render("VOLUME", True, "white")
     vol_up_btn = Button(None, (540, 200), "+", get_font(40), "green", "darkgreen")
     vol_down_btn = Button(None, (260, 200), "-", get_font(40), "red", "darkred")
-    test_music_btn = Button(None, (400, 300), "TEST MUSIC", get_font(30), "white", "gray")
+    test_music_btn = Button(
+        None, (400, 300), "TEST MUSIC", get_font(30), "white", "gray"
+    )
 
     running = True
     while running:
@@ -89,6 +129,7 @@ def options():
                 pygame.quit()
                 exit()
 
+            # Allows user to return to main menu
             if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
                 if test_music_playing:
                     pygame.mixer.music.stop()
@@ -117,9 +158,13 @@ def options():
         heading = get_font(18).render("Options Menu (ESC to return)", True, "white")
         canvas.blit(heading, heading.get_rect(center=(400, 120)))
 
+        # Draw volume label centered
         canvas.blit(volume_label, volume_label.get_rect(center=(400, 200)))
 
-        volume_value = get_font(20).render(f"{int(master_volume * 100)}%", True, "white")
+        # Draw volume value percentage below
+        volume_value = get_font(20).render(
+            f"{int(master_volume * 100)}%", True, "white"
+        )
         canvas.blit(volume_value, volume_value.get_rect(center=(400, 240)))
 
         test_music_btn.base_color = "green" if test_music_playing else "red"
@@ -135,6 +180,7 @@ def options():
     pygame.mixer.music.set_volume(master_volume)
     pygame.mixer.music.play(loops=1, fade_ms=3000)
 
+
 def menu():
     pygame.mixer.music.load("assets/music/debussy-arabesque-1.ogg")
     pygame.mixer.music.set_volume(master_volume)
@@ -144,17 +190,37 @@ def menu():
         canvas.fill("black")
         mouse_pos = pygame.mouse.get_pos()
 
+        # Title
         title_text = get_font(50).render("StarGuard", True, "gold")
-        title_rect = title_text.get_rect(center=(canvas.get_width() // 2, canvas.get_height() // 2 - 160))
+        title_rect = title_text.get_rect(
+            center=(canvas.get_width() // 2, canvas.get_height() // 2 - 160)
+        )
         canvas.blit(title_text, title_rect)
 
+        # Buttons
         center_x = canvas.get_width() // 2
         center_y = canvas.get_height() // 2
-        spacing = 80
+        spacing = 80  # Vertical spacing between buttons
 
-        play_button = Button(None, (center_x, center_y - spacing), "PLAY", get_font(36), "white", "purple")
-        options_button = Button(None, (center_x, center_y), "OPTIONS", get_font(36), "white", "purple")
-        quit_button = Button(None, (center_x, center_y + spacing), "QUIT", get_font(36), "white", "purple")
+        play_button = Button(
+            None,
+            (center_x, center_y - spacing),
+            "PLAY",
+            get_font(36),
+            "white",
+            "purple",
+        )
+        options_button = Button(
+            None, (center_x, center_y), "OPTIONS", get_font(36), "white", "purple"
+        )
+        quit_button = Button(
+            None,
+            (center_x, center_y + spacing),
+            "QUIT",
+            get_font(36),
+            "white",
+            "purple",
+        )
 
         for button in [play_button, options_button, quit_button]:
             button.changeColor(mouse_pos)
@@ -168,14 +234,18 @@ def menu():
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if play_button.checkForInput(mouse_pos):
                     play()
+
                 if options_button.checkForInput(mouse_pos):
+                    # Options menu here ...
                     options()
+
                 if quit_button.checkForInput(mouse_pos):
                     pygame.quit()
                     exit()
 
         pygame.display.update()
         clock.tick(60)
+
 
 if __name__ == "__main__":
     menu()
