@@ -82,5 +82,5 @@ class Game:
         return None
     
     def draw_ui(self, screen, font):
-        currency_text = font.render(f"Currency: ${self.currency}", True, "white")
+        currency_text = font.render(f"Bank: ${self.currency}", True, "white")
         screen.blit(currency_text, (10, 10))
