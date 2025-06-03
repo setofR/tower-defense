@@ -11,7 +11,6 @@ class Game:
         self.setup_path()
         
     def setup_path(self):
-        # Simple L-shaped path
         path_coords = [
             (0, 10), (1, 10), (2, 10), (3, 10), (4, 10), (5, 10),
             (6, 10), (7, 10), (8, 10), (9, 10), (10, 10),
@@ -31,9 +30,9 @@ class Game:
                 y = row * self.grid_size
                 
                 if self.grid[row][col] == 1:
-                    pygame.draw.rect(screen, "tan", (x, y, self.grid_size, self.grid_size))
+                    pygame.draw.rect(screen, "white", (x, y, self.grid_size, self.grid_size))
                 else:
-                    pygame.draw.rect(screen, "darkgreen", (x, y, self.grid_size, self.grid_size))
+                    pygame.draw.rect(screen, "brown", (x, y, self.grid_size, self.grid_size))
                 
                 pygame.draw.rect(screen, "black", (x, y, self.grid_size, self.grid_size), 1)
     

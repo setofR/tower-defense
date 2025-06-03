@@ -49,7 +49,8 @@ def play():
             
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if grid_pos and game.can_place_tower(grid_pos):
-                    print(f"Tower can be placed at {grid_pos}")
+                    print("notihng happens yet")
+                    # code to place a tower would go here
         
         pygame.display.update()
         clock.tick(60)
