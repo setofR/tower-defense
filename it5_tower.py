@@ -2,6 +2,8 @@ import pygame
 import math
 
 class Tower:
+    cost = 50
+    
     def __init__(self, x, y):
         self.x = x
         self.y = y
@@ -9,7 +11,6 @@ class Tower:
         self.range = 120
         self.fire_rate = 1000
         self.last_shot = 0
-        self.cost = 50
         self.size = 15
         self.color = "darkblue"
         
