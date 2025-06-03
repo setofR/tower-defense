@@ -1,6 +1,5 @@
 import pygame
 from sys import exit
-from it1_button import Button
 
 pygame.init()
 
