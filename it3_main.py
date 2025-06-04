@@ -1,5 +1,5 @@
 import pygame
-from constants import screen_width, screen_height
+from constants import game_name, game_logo, screen_width, screen_height
 from sys import exit
 from it2_button import Button
 from it3_game import Game
@@ -11,7 +11,8 @@ test_music_playing = False
 test_music_position = 0
 
 screen = pygame.display.set_mode((screen_width, screen_height))
-pygame.display.set_caption("StarGuard")
+pygame.display.set_caption(game_name)
+pygame.display.set_icon(game_logo)
 
 clock = pygame.time.Clock()
 
