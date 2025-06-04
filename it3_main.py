@@ -1,4 +1,5 @@
 import pygame
+from constants import screen_width, screen_height
 from sys import exit
 from it2_button import Button
 from it3_game import Game
@@ -9,7 +10,7 @@ master_volume = 0.3
 test_music_playing = False
 test_music_position = 0
 
-screen = pygame.display.set_mode((800, 800))
+screen = pygame.display.set_mode((screen_width, screen_height))
 pygame.display.set_caption("StarGuard")
 
 clock = pygame.time.Clock()
@@ -39,7 +40,7 @@ def play():
             x, y = grid_pos
             pygame.draw.rect(
                 screen,
-                (0, 255, 0, 100),
+                (0, 150, 150, 100),
                 (
                     x * game.grid_size,
                     y * game.grid_size,
@@ -59,7 +60,7 @@ def play():
 
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if grid_pos and game.can_place_tower(grid_pos):
-                    print("notihng happens yet")
+                    print(f"{grid_pos},")
                     # code to place a tower would go here
 
         pygame.display.update()
