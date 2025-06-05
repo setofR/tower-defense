@@ -2,7 +2,7 @@
 
 ### ⚠️ This project is currently in development. Nothing in this README is to be taken as final.
 
-**StarGuard** is a retro-ish-style tower defense game developed for the NEA (Component 3) of my Computer Science A-Level [[OCR H446/03](https://www.ocr.org.uk/Images/170844-specification-accredited-a-level-gce-computer-science-h446.pdf)].
+**StarGuard** is a retro-ish style tower defense game developed for the NEA (Component 3) of my Computer Science A-Level [[OCR H446/03](https://www.ocr.org.uk/Images/170844-specification-accredited-a-level-gce-computer-science-h446.pdf)].
 
 I chose this project since tower defense is a genre of games I generally enjoy and it seemed relatively simple to code (also meant I could easily use object-oriented techniques).
 
