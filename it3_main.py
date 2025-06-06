@@ -1,5 +1,5 @@
 import pygame
-from constants import game_name, game_logo, screen_width, screen_height, fps
+from constants import GAME_NAME, GAME_LOGO, SCREEN_WIDTH, SCREEN_HEIGHT, FPS
 from sys import exit
 from it2_button import Button
 from it3_game import Game
@@ -10,9 +10,9 @@ master_volume = 0.3
 test_music_playing = False
 test_music_position = 0
 
-screen = pygame.display.set_mode((screen_width, screen_height))
-pygame.display.set_caption(game_name)
-pygame.display.set_icon(game_logo)
+screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+pygame.display.set_caption(GAME_NAME)
+pygame.display.set_icon(GAME_LOGO)
 
 clock = pygame.time.Clock()
 
@@ -65,7 +65,7 @@ def play():
                     # code to place a tower would go here
 
         pygame.display.update()
-        clock.tick(60)
+        clock.tick(FPS)
 
     pygame.mixer.music.stop()
     pygame.mixer.music.load("assets/music/debussy-arabesque-1.ogg")
@@ -135,7 +135,7 @@ def options():
             button.update(screen)
 
         pygame.display.update()
-        clock.tick(60)
+        clock.tick(FPS)
 
     pygame.mixer.music.load("assets/music/debussy-arabesque-1.ogg")
     pygame.mixer.music.set_volume(master_volume)
@@ -200,7 +200,7 @@ def menu():
                     exit()
 
         pygame.display.update()
-        clock.tick(60)
+        clock.tick(FPS)
 
 
 if __name__ == "__main__":

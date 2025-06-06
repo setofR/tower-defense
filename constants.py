@@ -1,10 +1,7 @@
 import pygame
 
-game_name = "StarGuard"
-
-screen_width = 1000
-screen_height = 800
-
-game_logo = pygame.image.load('assets/images/starguard-logo.jpg')
-
-fps = 60
+GAME_NAME = "StarGuard"
+SCREEN_WIDTH = 1000
+SCREEN_HEIGHT = 800
+GAME_LOGO = pygame.image.load('assets/images/starguard-logo.jpg')
+FPS = 60

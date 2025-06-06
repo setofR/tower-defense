@@ -1,4 +1,5 @@
 import pygame
+from constants import GAME_NAME, GAME_LOGO, SCREEN_WIDTH, SCREEN_HEIGHT, FPS
 from sys import exit
 from it2_button import Button
 from it4_game import Game
@@ -9,8 +10,9 @@ master_volume = 0.3
 test_music_playing = False
 test_music_position = 0
 
-canvas = pygame.display.set_mode((800, 800))
-pygame.display.set_caption("StarGuard")
+screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+pygame.display.set_caption(GAME_NAME)
+pygame.display.set_icon(GAME_LOGO)
 
 clock = pygame.time.Clock()
 
@@ -22,50 +24,56 @@ def play():
     pygame.mixer.music.load("assets/music/greensleeves-8bit.ogg")
     pygame.mixer.music.set_volume(master_volume)
     pygame.mixer.music.play(loops=-1)
-    
+
     game = Game()
     font = get_font(24)
     
+    # Enemy spawning variables
     enemy_spawn_timer = 0
-    enemy_spawn_delay = 3000
+    enemy_spawn_delay = 3000  # 3 seconds
     
     running = True
     while running:
-        canvas.fill("darkblue")
+        screen.fill("darkblue")
         mouse_pos = pygame.mouse.get_pos()
         current_time = pygame.time.get_ticks()
         
+        # Spawn enemies periodically
         if current_time - enemy_spawn_timer > enemy_spawn_delay:
             game.spawn_enemy()
             enemy_spawn_timer = current_time
         
+        # Update game state
         game.update()
-        game.draw(canvas)
         
+        # Draw everything
+        game.draw_grid(screen)
+        game.draw_enemies(screen)
+        game.draw_ui(screen, font)
+
+        # Show tower placement preview
         grid_pos = game.get_grid_pos(mouse_pos)
         if grid_pos and game.can_place_tower(grid_pos):
             x, y = grid_pos
-            pygame.draw.rect(canvas, (0, 255, 0, 100), 
+            pygame.draw.rect(screen, (0, 255, 0, 100), 
                            (x * game.grid_size, y * game.grid_size, 
                             game.grid_size, game.grid_size), 2)
-        
-        game.draw_ui(canvas, font)
-        
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 exit()
-            
+
             if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
                 running = False
-            
+
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if grid_pos and game.can_place_tower(grid_pos):
                     print(f"Tower can be placed at {grid_pos}")
-        
+
         pygame.display.update()
-        clock.tick(60)
-    
+        clock.tick(FPS)
+
     pygame.mixer.music.stop()
     pygame.mixer.music.load("assets/music/debussy-arabesque-1.ogg")
     pygame.mixer.music.set_volume(master_volume)
@@ -82,7 +90,7 @@ def options():
 
     running = True
     while running:
-        canvas.fill("indigo")
+        screen.fill("indigo")
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -115,21 +123,21 @@ def options():
                         test_music_playing = True
 
         heading = get_font(18).render("Options Menu (ESC to return)", True, "white")
-        canvas.blit(heading, heading.get_rect(center=(400, 120)))
+        screen.blit(heading, heading.get_rect(center=(400, 120)))
 
-        canvas.blit(volume_label, volume_label.get_rect(center=(400, 200)))
+        screen.blit(volume_label, volume_label.get_rect(center=(400, 200)))
 
         volume_value = get_font(20).render(f"{int(master_volume * 100)}%", True, "white")
-        canvas.blit(volume_value, volume_value.get_rect(center=(400, 240)))
+        screen.blit(volume_value, volume_value.get_rect(center=(400, 240)))
 
         test_music_btn.base_color = "green" if test_music_playing else "red"
 
         for button in [vol_up_btn, vol_down_btn, test_music_btn]:
             button.changeColor(pygame.mouse.get_pos())
-            button.update(canvas)
+            button.update(screen)
 
         pygame.display.update()
-        clock.tick(60)
+        clock.tick(FPS)
 
     pygame.mixer.music.load("assets/music/debussy-arabesque-1.ogg")
     pygame.mixer.music.set_volume(master_volume)
@@ -141,15 +149,15 @@ def menu():
     pygame.mixer.music.play(loops=1, fade_ms=3000)
 
     while True:
-        canvas.fill("black")
+        screen.fill("black")
         mouse_pos = pygame.mouse.get_pos()
 
         title_text = get_font(50).render("StarGuard", True, "gold")
-        title_rect = title_text.get_rect(center=(canvas.get_width() // 2, canvas.get_height() // 2 - 160))
-        canvas.blit(title_text, title_rect)
+        title_rect = title_text.get_rect(center=(screen.get_width() // 2, screen.get_height() // 2 - 160))
+        screen.blit(title_text, title_rect)
 
-        center_x = canvas.get_width() // 2
-        center_y = canvas.get_height() // 2
+        center_x = screen.get_width() // 2
+        center_y = screen.get_height() // 2
         spacing = 80
 
         play_button = Button(None, (center_x, center_y - spacing), "PLAY", get_font(36), "white", "purple")
@@ -158,7 +166,7 @@ def menu():
 
         for button in [play_button, options_button, quit_button]:
             button.changeColor(mouse_pos)
-            button.update(canvas)
+            button.update(screen)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -175,7 +183,7 @@ def menu():
                     exit()
 
         pygame.display.update()
-        clock.tick(60)
+        clock.tick(FPS)
 
 if __name__ == "__main__":
     menu()
