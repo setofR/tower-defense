@@ -1,6 +1,6 @@
 import pygame
 
-class Enemy:
+class Enemy:    
     def __init__(self, path):
         self.path = path
         self.path_index = 0
@@ -12,7 +12,8 @@ class Enemy:
         self.reward = 10
         self.damage = 10
         self.size = 20
-        self.color = "red"
+        self.image = pygame.image.load("assets/images/enemies/bad_enemy.png")
+        self.image = pygame.transform.scale(self.image, (self.size * 2, self.size * 2))
         
     def move(self):
         if self.path_index < len(self.path) - 1:
@@ -28,19 +29,9 @@ class Enemy:
                     self.x += self.speed if dx > 0 else -self.speed
                 if dy != 0:
                     self.y += self.speed if dy > 0 else -self.speed
-    
+
     def draw(self, screen):
-        pygame.draw.circle(screen, self.color, (int(self.x), int(self.y)), self.size)
-        
-        # Health bar
-        bar_width = 30
-        bar_height = 4
-        bar_x = self.x - bar_width // 2
-        bar_y = self.y - self.size - 10
-        
-        pygame.draw.rect(screen, "red", (bar_x, bar_y, bar_width, bar_height))
-        health_width = int(bar_width * (self.health / self.max_health))
-        pygame.draw.rect(screen, "green", (bar_x, bar_y, health_width, bar_height))
+        screen.blit(self.image, (self.x - self.size, self.y - self.size))  
     
     def is_alive(self):
         return self.health > 0

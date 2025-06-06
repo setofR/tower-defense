@@ -9,7 +9,7 @@ master_volume = 0.3
 test_music_playing = False
 test_music_position = 0
 
-screen = pygame.display.set_mode((800, 800))
+canvas = pygame.display.set_mode((800, 800))
 pygame.display.set_caption("StarGuard")
 
 clock = pygame.time.Clock()
@@ -31,7 +31,7 @@ def play():
     
     running = True
     while running:
-        screen.fill("darkblue")
+        canvas.fill("darkblue")
         mouse_pos = pygame.mouse.get_pos()
         current_time = pygame.time.get_ticks()
         
@@ -40,16 +40,16 @@ def play():
             enemy_spawn_timer = current_time
         
         game.update()
-        game.draw(screen)
+        game.draw(canvas)
         
         grid_pos = game.get_grid_pos(mouse_pos)
         if grid_pos and game.can_place_tower(grid_pos):
             x, y = grid_pos
-            pygame.draw.rect(screen, (0, 255, 0, 100), 
+            pygame.draw.rect(canvas, (0, 255, 0, 100), 
                            (x * game.grid_size, y * game.grid_size, 
                             game.grid_size, game.grid_size), 2)
         
-        game.draw_ui(screen, font)
+        game.draw_ui(canvas, font)
         
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -82,7 +82,7 @@ def options():
 
     running = True
     while running:
-        screen.fill("indigo")
+        canvas.fill("indigo")
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -115,18 +115,18 @@ def options():
                         test_music_playing = True
 
         heading = get_font(18).render("Options Menu (ESC to return)", True, "white")
-        screen.blit(heading, heading.get_rect(center=(400, 120)))
+        canvas.blit(heading, heading.get_rect(center=(400, 120)))
 
-        screen.blit(volume_label, volume_label.get_rect(center=(400, 200)))
+        canvas.blit(volume_label, volume_label.get_rect(center=(400, 200)))
 
         volume_value = get_font(20).render(f"{int(master_volume * 100)}%", True, "white")
-        screen.blit(volume_value, volume_value.get_rect(center=(400, 240)))
+        canvas.blit(volume_value, volume_value.get_rect(center=(400, 240)))
 
         test_music_btn.base_color = "green" if test_music_playing else "red"
 
         for button in [vol_up_btn, vol_down_btn, test_music_btn]:
             button.changeColor(pygame.mouse.get_pos())
-            button.update(screen)
+            button.update(canvas)
 
         pygame.display.update()
         clock.tick(60)
@@ -141,15 +141,15 @@ def menu():
     pygame.mixer.music.play(loops=1, fade_ms=3000)
 
     while True:
-        screen.fill("black")
+        canvas.fill("black")
         mouse_pos = pygame.mouse.get_pos()
 
         title_text = get_font(50).render("StarGuard", True, "gold")
-        title_rect = title_text.get_rect(center=(screen.get_width() // 2, screen.get_height() // 2 - 160))
-        screen.blit(title_text, title_rect)
+        title_rect = title_text.get_rect(center=(canvas.get_width() // 2, canvas.get_height() // 2 - 160))
+        canvas.blit(title_text, title_rect)
 
-        center_x = screen.get_width() // 2
-        center_y = screen.get_height() // 2
+        center_x = canvas.get_width() // 2
+        center_y = canvas.get_height() // 2
         spacing = 80
 
         play_button = Button(None, (center_x, center_y - spacing), "PLAY", get_font(36), "white", "purple")
@@ -158,7 +158,7 @@ def menu():
 
         for button in [play_button, options_button, quit_button]:
             button.changeColor(mouse_pos)
-            button.update(screen)
+            button.update(canvas)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:

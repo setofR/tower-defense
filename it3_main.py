@@ -1,5 +1,5 @@
 import pygame
-from constants import game_name, game_logo, screen_width, screen_height
+from constants import game_name, game_logo, screen_width, screen_height, fps
 from sys import exit
 from it2_button import Button
 from it3_game import Game
