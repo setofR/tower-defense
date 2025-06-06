@@ -16,11 +16,10 @@ class Game:
 
     def setup_path(self):
         path_coords = [
-            (0, 2),
-            (1, 2),
-            (2, 2),
-            (3, 2),
-            (4, 2),
+            (0, 3),
+            (1, 3),
+            (2, 3),
+            (3, 3),
             (4, 3),
             (4, 4),
             (4, 5),
@@ -37,12 +36,11 @@ class Game:
             (9, 5),
             (9, 4),
             (9, 3),
-            (9, 2),
-            (10, 2),
-            (11, 2),
-            (12, 2),
-            (13, 2),
-            (14, 2),
+            (9, 3),
+            (10, 3),
+            (11, 3),
+            (12, 3),
+            (13, 3),
             (14, 3),
             (14, 4),
             (14, 5),
@@ -123,7 +121,7 @@ class Game:
                     )
                 else:
                     pygame.draw.rect(
-                        screen, "sandybrown", (x, y, self.grid_size, self.grid_size)
+                        screen, "purple", (x, y, self.grid_size, self.grid_size)
                     )
 
                 pygame.draw.rect(

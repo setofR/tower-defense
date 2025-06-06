@@ -14,7 +14,7 @@ class Enemy:
         self.size = 15
         
         # Load and scale enemy image
-        self.image = pygame.image.load("assets/images/enemies/angry_enemy.png")
+        self.image = pygame.image.load("assets/images/enemies/angry_enemy_v2.png")
         self.image = pygame.transform.scale(self.image, (self.size * 2, self.size * 2))
         
     def move(self):
