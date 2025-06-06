@@ -10,9 +10,10 @@ master_volume = 0.3
 test_music_playing = False
 test_music_position = 0
 
+pygame.display.set_icon(GAME_LOGO)
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption(GAME_NAME)
-pygame.display.set_icon(GAME_LOGO)
+
 
 clock = pygame.time.Clock()
 
