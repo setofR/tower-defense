@@ -8,10 +8,10 @@ class Enemy:
         self.y = path[0][1]
         self.health = 100
         self.max_health = 100
-        self.speed = 2
+        self.speed = 5
         self.reward = 20
         self.damage = 10
-        self.size = 15
+        self.size = 20
         
         # Load and scale enemy image
         self.image = pygame.image.load("assets/images/enemies/angry_enemy_v2.png")
@@ -34,22 +34,7 @@ class Enemy:
                 self.y += (dy / distance) * self.speed
 
     def draw(self, screen):
-        # Draw image centered on enemy position
         screen.blit(self.image, (self.x - self.size, self.y - self.size))
-        
-        # Health bar
-        bar_width = 30
-        bar_height = 5
-        bar_x = self.x - bar_width // 2
-        bar_y = self.y - self.size - 10
-        
-        # Background (red)
-        pygame.draw.rect(screen, "red", (bar_x, bar_y, bar_width, bar_height))
-        # Health (green)
-        health_percentage = self.health / self.max_health
-        pygame.draw.rect(screen, "green", (bar_x, bar_y, bar_width * health_percentage, bar_height))
-        # Border
-        pygame.draw.rect(screen, "black", (bar_x, bar_y, bar_width, bar_height), 1)
     
     def is_alive(self):
         return self.health > 0

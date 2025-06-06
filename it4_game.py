@@ -1,6 +1,8 @@
 import pygame
 from it4_enemy import Enemy
 
+def get_font(size):
+    return pygame.font.Font("assets/fonts/font.ttf", size)
 
 class Game:
     def __init__(self):
@@ -138,12 +140,12 @@ class Game:
 
     def draw_ui(self, screen, font):
         # Bank display
-        money_text = font.render(f"Gold: ${self.money}", True, "gold")
-        screen.blit(money_text, (10, 10))
+        money_text = get_font(16).render(f"Bank: £{self.money}", True, "white")
+        screen.blit(money_text, (808, 10))
 
         # Base health display
-        health_text = font.render(f"Base Health: {self.base_health}", True, "white")
-        screen.blit(health_text, (10, 40))
+        health_text = get_font(16).render(f"HP: {self.base_health}", True, "white")
+        screen.blit(health_text, (808, 40))
 
         # Game over message
         if self.base_health <= 0:
