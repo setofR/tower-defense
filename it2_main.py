@@ -8,12 +8,6 @@ from it2_button import Button
 pygame.init()
 
 
-# Master volume control
-master_volume = 0.3  # Default master volume
-test_music_playing = False
-test_music_position = 0
-
-
 # Game window properties
 screen = pygame.display.set_mode((800, 800))
 pygame.display.set_caption("StarGuard")
